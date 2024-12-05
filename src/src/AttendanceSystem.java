@@ -21,7 +21,7 @@ public class AttendanceSystem extends JFrame {
     private JLabel messageLabel;
 
     private Connection conn;
-    private boolean isLoggedIn = false; // Admin login flag
+    private boolean isLoggedIn = false;
 
     public AttendanceSystem() {
         setTitle("Attendance Monitoring System");
@@ -43,11 +43,9 @@ public class AttendanceSystem extends JFrame {
     private void setUpUI() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Employee Tab (Time In and Out)
         JPanel employeePanel = new JPanel();
-        employeePanel.setBackground(new Color(243, 243, 243)); // Light background
+        employeePanel.setBackground(new Color(243, 243, 243));
 
-        // Employee RFID Section
         JPanel rfidPanel = new JPanel();
         rfidPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         rfidPanel.setBackground(new Color(243, 243, 243));
@@ -80,11 +78,9 @@ public class AttendanceSystem extends JFrame {
 
         tabbedPane.addTab("Employee", employeePanel);
 
-        // Admin Tab
         JPanel adminPanel = new JPanel();
         adminPanel.setBackground(new Color(243, 243, 243));
 
-        // Admin Login Section
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
         loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -94,12 +90,12 @@ public class AttendanceSystem extends JFrame {
         JPasswordField adminPasswordField = new JPasswordField();
         JButton adminLoginButton = new JButton("Login as Admin");
 
-        adminLoginButton.setBackground(null); // Remove background color
-        adminLoginButton.setForeground(Color.BLACK); // Set text color to black
+        adminLoginButton.setBackground(null);
+        adminLoginButton.setForeground(Color.BLACK);
         adminLoginButton.setFocusPainted(false);
-        adminLoginButton.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Remove bold font if needed
+        adminLoginButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         adminLoginButton.setPreferredSize(new Dimension(200, 40));
-        adminLoginButton.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // Set a neutral border color
+        adminLoginButton.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         loginPanel.add(new JLabel("Username:"));
         loginPanel.add(adminUsernameField);
@@ -109,25 +105,23 @@ public class AttendanceSystem extends JFrame {
 
         adminPanel.add(loginPanel, BorderLayout.NORTH);
 
-        // Admin Controls Section
         JPanel adminControlsPanel = new JPanel(new FlowLayout());
         adminControlsPanel.setBackground(new Color(243, 243, 243));
 
         JButton viewAttendanceButton = new JButton("View Attendance");
         JButton eraseRecordsButton = new JButton("Erase Records");
 
-        // Remove background color and set text color to black for both buttons
         viewAttendanceButton.setBackground(null);
         viewAttendanceButton.setForeground(Color.BLACK);
         viewAttendanceButton.setFocusPainted(false);
-        viewAttendanceButton.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Remove bold font if needed
+        viewAttendanceButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         viewAttendanceButton.setPreferredSize(new Dimension(200, 40));
         viewAttendanceButton.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         eraseRecordsButton.setBackground(null);
         eraseRecordsButton.setForeground(Color.BLACK);
         eraseRecordsButton.setFocusPainted(false);
-        eraseRecordsButton.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Remove bold font if needed
+        eraseRecordsButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         eraseRecordsButton.setPreferredSize(new Dimension(200, 40));
         eraseRecordsButton.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
@@ -135,7 +129,6 @@ public class AttendanceSystem extends JFrame {
         adminControlsPanel.add(eraseRecordsButton);
         adminPanel.add(adminControlsPanel, BorderLayout.CENTER);
 
-        // Attendance Table Section
         tableModel = new DefaultTableModel(new String[]{"Employee Name", "Date", "Time In", "Time Out"}, 0);
         attendanceTable = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(attendanceTable);
@@ -145,16 +138,12 @@ public class AttendanceSystem extends JFrame {
 
         getContentPane().add(tabbedPane);
 
-        // Handle Admin Login
         adminLoginButton.addActionListener(e -> adminLoginAction(adminUsernameField, adminPasswordField, tableScrollPane));
 
-        // Handle View Attendance Button
         viewAttendanceButton.addActionListener(e -> viewAttendanceAction());
 
-        // Handle Erase Records Button
         eraseRecordsButton.addActionListener(e -> eraseRecordsAction());
 
-        // RFID Input Handling
         empNumberField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -188,13 +177,11 @@ public class AttendanceSystem extends JFrame {
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
             String timeNow = new SimpleDateFormat("HH:mm:ss").format(new java.util.Date());
 
-            // Load and center the employee image
             ImageIcon photoIcon = loadImage(photoPath);
             photoLabel.setIcon(photoIcon);
-            photoLabel.setHorizontalAlignment(JLabel.CENTER);  // Centering the photo
-            photoLabel.setVerticalAlignment(JLabel.CENTER);  // Ensures vertical centering
+            photoLabel.setHorizontalAlignment(JLabel.CENTER);
+            photoLabel.setVerticalAlignment(JLabel.CENTER);
 
-            // Center the message text
             messageLabel.setHorizontalAlignment(JLabel.CENTER);
             messageLabel.setVerticalAlignment(JLabel.CENTER);
 
@@ -216,7 +203,6 @@ public class AttendanceSystem extends JFrame {
                     updateStmt.setString(3, date);
                     updateStmt.executeUpdate();
 
-                    // Display a message for time out
                     messageLabel.setText("<html><b>Goodbye " + name + ", Have a Nice Day!</b><br>" +
                             "You timed out on " + date + " at " + timeNow + "</html>");
                 }
@@ -228,7 +214,6 @@ public class AttendanceSystem extends JFrame {
                 insertStmt.setString(3, timeNow);
                 insertStmt.executeUpdate();
 
-                // Display a message for time in
                 messageLabel.setText("<html><b>Welcome " + name + ", Great to Have You Back!</b><br>" +
                         "You timed in on " + date + " at " + timeNow + "</html>");
             }
@@ -240,84 +225,72 @@ public class AttendanceSystem extends JFrame {
     }
 }
 
-    
-
     private ImageIcon loadImage(String photoPath) {
         try {
             Image img = ImageIO.read(new File(photoPath));
             ImageIcon photoIcon = new ImageIcon(img.getScaledInstance(150, 150, Image.SCALE_SMOOTH));
             return photoIcon;
-        } catch (Exception e) {
-            return new ImageIcon(); // return an empty icon if image not found
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ImageIcon();
         }
     }
 
     private void adminLoginAction(JTextField adminUsernameField, JPasswordField adminPasswordField, JScrollPane tableScrollPane) {
-        String username = adminUsernameField.getText();
-        String password = new String(adminPasswordField.getPassword());
-
-        if (username.equals("admin") && password.equals("password")) {
-            // Admin login success
-            JOptionPane.showMessageDialog(this, "Admin Login Successful!", "Login", JOptionPane.INFORMATION_MESSAGE);
-            isLoggedIn = true; // Set login flag
+        if (adminUsernameField.getText().equals("admin") && new String(adminPasswordField.getPassword()).equals("password")) {
+            isLoggedIn = true;
+            JOptionPane.showMessageDialog(this, "Login successful!", "Admin", JOptionPane.INFORMATION_MESSAGE);
             loadAttendanceData();
         } else {
-            JOptionPane.showMessageDialog(this, "Invalid Admin Credentials", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid credentials!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void loadAttendanceData() {
-        if (!isLoggedIn) return; // Prevent loading data if not logged in
+        if (isLoggedIn) {
+            try {
+                String query = "SELECT * FROM attendance";
+                PreparedStatement pst = conn.prepareStatement(query);
+                ResultSet rs = pst.executeQuery();
+                tableModel.setRowCount(0);
 
-        try {
-            String query = "SELECT attendance.employee_number, employees.name, attendance.date, attendance.time_in, attendance.time_out " +
-                           "FROM attendance " +
-                           "JOIN employees ON attendance.employee_number = employees.employee_number";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    String empName = rs.getString("employee_name");
+                    String date = rs.getString("date");
+                    String timeIn = rs.getString("time_in");
+                    String timeOut = rs.getString("time_out");
 
-            // Clear previous table data
-            tableModel.setRowCount(0);
-
-            // Add new data to the table
-            while (rs.next()) {
-                String empName = rs.getString("name");
-                String date = rs.getString("date");
-                String timeIn = rs.getString("time_in");
-                String timeOut = rs.getString("time_out");
-                tableModel.addRow(new Object[]{empName, date, timeIn, timeOut});
+                    tableModel.addRow(new Object[]{empName, date, timeIn, timeOut});
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     private void viewAttendanceAction() {
-        if (!isLoggedIn) {
-            JOptionPane.showMessageDialog(this, "Please log in as admin first!", "Login Required", JOptionPane.WARNING_MESSAGE);
-        } else {
-            loadAttendanceData();
-        }
+        loadAttendanceData();
     }
 
     private void eraseRecordsAction() {
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to erase all attendance records?", 
-                "Confirm Erase", JOptionPane.YES_NO_OPTION);
-
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to erase all records?", "Erase Records", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                String deleteQuery = "DELETE FROM attendance";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(deleteQuery);
-                JOptionPane.showMessageDialog(this, "All records have been erased.", "Records Erased", JOptionPane.INFORMATION_MESSAGE);
-                tableModel.setRowCount(0); // Clear the table view
-            } catch (SQLException e) {
-                e.printStackTrace();
+                String query = "DELETE FROM attendance";
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Attendance records erased!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                loadAttendanceData();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AttendanceSystem().setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            AttendanceSystem system = new AttendanceSystem();
+            system.setVisible(true);
+        });
     }
 }
